@@ -3,20 +3,11 @@
 <head>
     <meta charset="UTF-8">
     {% load static %}
-    <title>Dealership - Review</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+<body>
 
-    <body>
-        <!-- Navigation Bar in Bootstrap -->
+    <!-- Navigation Bar in Bootstrap -->
     <nav class="navbar navbar-expand-xl navbar-dark bg-dark justify-content-between">
         <a class="navbar-brand" href="#">Car Dealership</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,16 +48,24 @@
         </div>
     </nav>
 
-    <!--Add a dealer table here -->
-
-
-    <!-- Footer -->
-    <footer class="footer fixed-bottom">
-        <div class="container">
-          <span class="text-muted">Place sticky footer content here.</span>
+    <!-- Stylize Login form -->
+    <form action="{% url 'djangoapp:login' %}" method="post">
+        {% csrf_token %}
+        <div class="container mt-3">
+            <h1>Login</h1>
+            <div class="form-group">
+                <label for="Username"><b>User Name</b></label>
+                <input id="Username" class="form-control" type="text" placeholder="Enter User Name: " name="Username" required> 
+                <label for="Password"><b>Password</b></label>
+                <input id="Password" class="form-control" type="Password"  placeholder="Enter Password: " name="Password" required>
+            </div>
+            {% if message %}
+                <div class="alert alert-warning">
+                    {{ message }}
+                </div>
+            {% endif %}
+            <button class="btn btn-primary" type="submit">Login</button>
         </div>
-    </footer>
-    
-    </body>
+    </form>
 
-</html>
+</body>
