@@ -5,6 +5,8 @@
 const { CloudantV1 } = require('@ibm-cloud/cloudant');
 const { IamAuthenticator } = require('ibm-cloud-sdk-core');
 
+// As the other functions, it returns the database names, but uses async await keywords.
+// It make promise driven code easier to read and write
 async function main(params) {
       const authenticator = new IamAuthenticator({ apikey: params.IAM_API_KEY })
       const cloudant = CloudantV1.newInstance({
@@ -19,3 +21,13 @@ async function main(params) {
       }
 }
 
+/*
+Example of return:
+    {
+        "dbs": [
+            "dealerships",
+            "reviews"
+        ]
+    }
+
+*/

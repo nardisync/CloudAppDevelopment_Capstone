@@ -17,6 +17,9 @@ function main(params) {
     return dbListPromise;
 }
 
+// This function is an improvement of the same function on index.js. 
+// It returns a promise that is resolved when the results
+// come back or rejected if there is an error
 function getDbs(cloudant) {
      return new Promise((resolve, reject) => {
          cloudant.getAllDbs()
@@ -64,3 +67,15 @@ function getDbs(cloudant) {
              });
          })
  }
+
+ 
+/*
+Example of return:
+    {
+        "dbs": [
+            "dealerships",
+            "reviews"
+        ]
+    }
+
+*/

@@ -17,6 +17,9 @@ function main(params) {
   return { dbs: dbList };
 }
 
+// This method returns a promise, but IBM Cloud Function does not 
+// wait for this promise to get resolved, so it returns an 
+// empty promise as : '{}'
 function getDbs(cloudant) {
     cloudant.getAllDbs().then((body) => {
         body.forEach((db) => {
@@ -25,3 +28,14 @@ function getDbs(cloudant) {
     }).catch((err) => { console.log(err); });
 }
 
+
+/*
+Example of return:
+    {
+        "dbs": [
+            "dealerships",
+            "reviews"
+        ]
+    }
+
+*/
