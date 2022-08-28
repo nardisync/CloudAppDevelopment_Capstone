@@ -12,9 +12,9 @@ from cloudant.error import CloudantException
 import requests
 import json
 
+databaseName = "reviews"
 
 def main(dict):
-    databaseName = "reviews"
 
     try:
         # Trying to authenticates with IBM Cloudant service 
@@ -46,17 +46,118 @@ def main(dict):
         print("connection error")
         return {"error": err}
 
-    # Returing all the retrives databases
-    return {"dbs": client.all_dbs()}
+
+
+def getAllReviewsWithSelector(dict, selector):
+    
+    try:
+        # Trying to authenticates with IBM Cloudant service 
+        # using the username and api key
+        client = Cloudant.iam(
+            account_name=dict["COUCH_USERNAME"],
+            api_key=dict["IAM_API_KEY"],
+            connect=True,
+        )
+        # This call will return a Dict which content is all the entry in the database
+        # 'databaseName' filtered by the selector. 
+        reviewsDatabaseDocFiltered = client[databaseName].get_query_result(selector=selector, 
+                                                                            raw_result=True)
+        print("Element Filtered from Database: ")
+        for elem in reviewsDatabaseDocFiltered['docs']:
+            print(elem)
+
+
+    except CloudantException as ce:
+        if ce.status_code == 404:
+            print("Code 404: dealerId does not exist")
+            print({"Error:": ce })
+            return {"Error": ce}
+        elif ce.status_code == 500:
+            print("Code 500: Something went wrong on the server")
+            print({"Error:": ce })
+            return {"Error": ce}
+    
+    except (requests.exceptions.RequestException, ConnectionResetError) as err:
+        print("Connection error")
+        return {"Error": err}
+
+    # Returing all the retrives filtered entrys of the database
+    return {"Databases Filtered : ": reviewsDatabaseDocFiltered}
+
+
+def postReviewForDealership(dict, json_review):
+    try:
+        # Trying to authenticates with IBM Cloudant service 
+        # using the username and api key
+        client = Cloudant.iam(
+            account_name=dict["COUCH_USERNAME"],
+            api_key=dict["IAM_API_KEY"],
+            connect=True,
+        )
+        
+        selector = {
+            "id" : json_review['review']['id']
+        }
+
+        if not client[databaseName].get_query_result(selector=selector, raw_result=True)['docs']:
+            print("Document does not exist")
+            newDocument = reviewsDatabaseDocFiltered = client[databaseName].create_document(json_review["review"])
+            if newDocument.exists():
+                print(f"Document successfully created.")
+        else :
+            print("Document already exist")
+            return "Document already exist"
+
+
+    except CloudantException as ce:
+        if ce.status_code == 500:
+            print("Code 500: Something went wrong on the server")
+            print({"Error:": ce })
+            return {"Error": ce}
+    
+    except (requests.exceptions.RequestException, ConnectionResetError) as err:
+        print("Connection error")
+        return {"Error": err}
+
+    return True
+
+
+
+
+
 
 if __name__ == '__main__':
 
     temp_params = {
-
+        "COUCH_URL": "NONE",
+        "COUCH_USERNAME": "NONE",
+        "IAM_API_KEY": "NONE"
     }
 
     temp_selector = {
-        'st': 'XX'
+        'dealership': {'$eq': 15}
+    }
+  
+    temp_selector = {
+        'dealership': 15
     }
 
-    main(temp_params)
+    temp_review = {
+        "review": 
+        {
+            "id": 1114,
+            "name": "Upkar Lidder",
+            "dealership": 15,
+            "review": "Great service!",
+            "purchase": 'false',
+            "another": "field",
+            "purchase_date": "02/16/2021",
+            "car_make": "Audi",
+            "car_model": "Car",
+            "car_year": 2021
+        }
+    }
+
+    #main(temp_params)
+    #getAllReviewsWithSelector(temp_params, temp_selector)
+    postReviewForDealership(temp_params, temp_review)
