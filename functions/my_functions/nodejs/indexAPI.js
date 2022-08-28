@@ -96,8 +96,8 @@ async function getAllDealershipsWithState(params, selector) {
 /* ------------------------------ Testing the functions --------------------------- */
 /* -------------------------------------------------------------------------------- */
 temp_params = {
-    "COUCH_URL": "https://cfc5412f-9d19-4d56-abc5-443574271ee4-bluemix.cloudantnosqldb.appdomain.cloud",
-    "IAM_API_KEY": "lRUAQ2fbb2vRNrSggnQlN1lMgZgzcNT5cto9G22uY60x"
+    "COUCH_URL": "NONE",
+    "IAM_API_KEY": "NONE"
 }
 temp_selector = {
     'st': 'XX'

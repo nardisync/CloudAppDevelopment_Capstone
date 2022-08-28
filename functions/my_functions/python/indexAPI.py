@@ -35,3 +35,17 @@ def main(dict):
 
     # Returing all the retrives databases
     return {"dbs": client.all_dbs()}
+
+if __name__ == '__main__':
+
+    temp_params = {
+        "COUCH_URL": "NONE",
+        "COUCH_USERNAME": "syncogame@gmail.com",
+        "IAM_API_KEY": "NONE"
+    }
+
+    temp_selector = {
+        'st': 'XX'
+    }
+
+    main(temp_params)
