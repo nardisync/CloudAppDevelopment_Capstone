@@ -10,10 +10,11 @@
 from cloudant.client import Cloudant
 from cloudant.error import CloudantException
 import requests
+import json
 
 
 def main(dict):
-    databaseName = "dealerships"
+    databaseName = "reviews"
 
     try:
         # Trying to authenticates with IBM Cloudant service 
@@ -23,10 +24,22 @@ def main(dict):
             api_key=dict["IAM_API_KEY"],
             connect=True,
         )
-        print("Databases: {0}".format(client.all_dbs()))
+        # This call will return a Dict which content is all the database called 'databaseName'. 
+        reviewsDatabaseDoc = client.get(key=databaseName, remote=True).all_docs(include_docs=True)
+        print(reviewsDatabaseDoc)
+        print(type(reviewsDatabaseDoc["rows"]))
+
+        # This Dict contains a Key called row that contains all the entries of the database 
+        # as a List of Dict 
+        # For each row of this entry, we use the Key doc for get all the info necessary
+        for row in reviewsDatabaseDoc["rows"]:
+            formated_row = json.dumps(row['doc'], sort_keys=True, indent=4)
+            print(formated_row)
+            print("--------------------")
 
     except CloudantException as ce:
         print("unable to connect")
+        print({"Error:": ce})
         return {"error": ce}
     
     except (requests.exceptions.RequestException, ConnectionResetError) as err:
@@ -39,9 +52,7 @@ def main(dict):
 if __name__ == '__main__':
 
     temp_params = {
-        "COUCH_URL": "NONE",
-        "COUCH_USERNAME": "syncogame@gmail.com",
-        "IAM_API_KEY": "NONE"
+
     }
 
     temp_selector = {
