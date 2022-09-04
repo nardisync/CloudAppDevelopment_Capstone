@@ -8,24 +8,33 @@ from requests.auth import HTTPBasicAuth
 # A function to make HTTP GET requests.
 # Return a JSON String
 def get_request(url, dealerId=None, stateId=None, **kwargs):
-    print(kwargs)
     print("GET from {} ".format(url))
     try:
-        if dealerId:
-            pass
-        elif stateId:
-            pass
+        if dealerId != None:
+            print("Call Selector with Dealer ID")
+            url += f"?id={dealerId}"
+            print(f"URL: {url}")
+            response = requests.get(url, 
+                                    headers={'Content-Type': 'application/json'},
+                                    params=kwargs)
+        elif stateId != None:
+            print("Call Selector with Dealer State")
+            url += f"?st={stateId}"
+            print(f"URL: {url}")
+            response = requests.get(url, 
+                                    headers={'Content-Type': 'application/json'},
+                                    params=kwargs )
         else:
             # Call get method of requests library with URL and parameters
-            print("Else")
-            response = requests.get(url, headers={'Content-Type': 'application/json'},
+            print("Classic Call, no Selector")
+            response = requests.get(url, 
+                                    headers={'Content-Type': 'application/json'},
                                     params=kwargs)
     except:
         # If any error occurs
         print("Network exception occurred")
     status_code = response.status_code
     print(f"With status {status_code}.")
-    print(response)
     print(response.text)
     json_data = json.loads(response.text)
     return json_data
@@ -95,9 +104,11 @@ def get_dealers_by_state(url, stateId, **kwargs):
 
 
 if __name__ == '__main__':
-
-
-    url="https://eu-gb.functions.appdomain.cloud/api/v1/web/syncogame%40gmail.com_djangoserver-space/CloudApp_FinalCapstone/getAllDealerships"
+    url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/syncogame%40gmail.com_djangoserver-space/CloudApp_FinalCapstone/getAllDealerships"
     print(f"get_dealers_from_cf: {get_dealers_from_cf(url)}")
     print("---------------------------")
-
+    url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/syncogame%40gmail.com_djangoserver-space/CloudApp_FinalCapstone/getAllDealershipsWithState"
+    print(f"get_dealers_from_cf: {get_dealer_by_id_from_cf(url, dealerId=15)}")
+    print("---------------------------")
+    print(f"get_dealers_from_cf: {get_dealers_by_state(url, stateId='TX')}")
+    print("---------------------------")
