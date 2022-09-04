@@ -1,6 +1,6 @@
 import requests
 import json
-#from .models import CarDealer
+from .models import CarDealer
 from requests.auth import HTTPBasicAuth
 
 

@@ -58,7 +58,11 @@
     </nav>
 
     <!--Add a dealer table here -->
-
+    <div>
+        {% for dealer in dealers_short_name %}
+        <div>{{ dealer }}</div>
+        {% endfor %}
+    </div>
 
     <!-- Footer -->
     <footer class="footer fixed-bottom">

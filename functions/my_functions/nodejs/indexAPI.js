@@ -33,7 +33,7 @@ async function getAllDealerships(params) {
     const dbName = 'dealerships'
     cloudant.setServiceUrl(params.COUCH_URL);
     try {
-        let dbDealershipsDocs = await cloudant.postAllDocs({ db: dbName, includeDocs: true})
+        let dbDealershipsDocs = await cloudant.postAllDocs({ db: dbName, includeDocs: true, })
         //dbDealershipsDocs.result.rows.forEach(element => console.log(element['doc']))
         console.log(dbDealershipsDocs.result.rows)
         return dbDealershipsDocs.result.rows
