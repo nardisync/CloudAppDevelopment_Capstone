@@ -65,9 +65,16 @@ def get_request(url, dealerId=None, stateId=None, apiKey=None, **kwargs):
 
 
 
-# Create a `post_request` to make HTTP POST requests
-# e.g., response = requests.post(url, params=kwargs, json=payload)
-
+# Post Request for adding a Review in the cloudand app
+def post_request(url, jsonPayload, **kwargs):
+    json_payload = {}
+    json_payload['review'] = jsonPayload
+    json_object = json.dumps(json_payload, indent = 4) 
+    print(f"Payload: {json_object}")
+    response = requests.post(url, 
+                            params=kwargs, 
+                            json=json_payload)
+    return response
 
 
 # A Function to get dealers from a cloud function
@@ -118,7 +125,7 @@ def analyze_review_sentiments(dealerreview):
     params["features"] = "false"
     params["return_analyzed_text"] = "true"
     url = "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/873bd99a-903e-41c4-a17c-fb1a9029cb84"
-    api_key = ""
+    api_key = "FYU-mqbxx8IYIJwLlvELjrrbnGro3f-SxxWq4aDoRCaE"
     #json_result = get_request(url, apiKey=api_key, kwargs=params)
 
     choice = randrange(3)

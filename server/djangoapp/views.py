@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
-from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf
+from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -117,7 +117,47 @@ def get_dealer_details(request, dealer_id):
 
 
 
-# Create a `add_review` view to submit a review
-# def add_review(request, dealer_id):
-# ...
+# View for submit a review
+def add_review(request, dealer_id):
+    context = {}
+    if request.method == 'GET':
+        context["dealer_id"] = dealer_id
+        return render(request, 'djangoapp/add_review.html', context)
+
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            review = {}
+
+            #review["time"] = str(datetime.utcnow().isoformat())
+            review["dealership"] = int(request.POST["DealerID"])
+            review["review"] = str(request.POST["Review"])
+            review["name"] = str(request.POST["Name"])
+            review["purchase"] = str(request.POST["Purchase"])
+            review["car_make"] = str(request.POST["CarMake"])
+            review["car_model"] = str(request.POST["CarModel"])
+            review["car_year"] = int(request.POST["CarYear"])
+    "review": {
+        "id": 1114,
+        "name": "Upkar Lidder",
+        "dealership": 15,
+        "review": "Great service!",
+        "purchase": "false",
+        "another": "field",
+        "purchase_date": "02/16/2021",
+        "car_make": "Audi",
+        "car_model": "Car",
+        "car_year": 2021
+    }
+
+            url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/syncogame%40gmail.com_djangoserver-space/CloudApp_FinalCapstone/postReviewForDealership"
+            
+            response = post_request(url=url, jsonPayload=review)
+            print(f"Response: {response.text}")
+
+            return redirect('djangoapp:login')
+        else:
+            context['message'] = "Invalid username or password."
+            return render(request, 'djangoapp/user_login.html', context)
+
+
 
