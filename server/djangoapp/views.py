@@ -9,6 +9,7 @@ from django.contrib import messages
 from datetime import datetime
 import logging
 import json
+import time
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -128,12 +129,15 @@ def add_review(request, dealer_id):
     if request.method == "POST":
         if request.user.is_authenticated:
             review = {}
-
-            #review["time"] = str(datetime.utcnow().isoformat())
+            
+            # Da migliorare direi
+            review["id"] = int(((time.time()/60)/60))
+            
+            review["name"] = str(request.POST["Name"])
             review["dealership"] = int(dealer_id)
             review["review"] = str(request.POST["Review"])
-            review["name"] = str(request.POST["Name"])
             review["purchase"] = str(request.POST["Purchase"])
+            review["purchase_date"] = str(datetime.utcnow().isoformat())
             review["car_make"] = str(request.POST["CarMake"])
             review["car_model"] = str(request.POST["CarModel"])
             review["car_year"] = int(request.POST["CarYear"])
