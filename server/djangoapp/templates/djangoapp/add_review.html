@@ -53,14 +53,11 @@
         </nav>
 
     <!-- Review form here -->
-    <form action="{% url 'djangoapp:review' 15 %}" method="post">
+    <form action="{% url 'djangoapp:review' dealer_id %}" method="post">
         {% csrf_token %}
         <div class="container mt-3">
             <h1>Add your Review</h1>
             <div class="form-group">
-                <label for="DealerID"><b>Dealer ID</b></label>
-                <input id="DealerID" class="form-control" type="DealerID" placeholder="Enter Dealer ID: " name="DealerID" required> 
-                
                 <label for="Name"><b>Name</b></label>
                 <input id="Name" class="form-control" type="Name"  placeholder="Enter your Name: " name="Name" required>
                 

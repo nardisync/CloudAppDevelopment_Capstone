@@ -120,6 +120,7 @@ def get_dealer_details(request, dealer_id):
 # View for submit a review
 def add_review(request, dealer_id):
     context = {}
+    print(f"DEALER_ID RECEIVED: {dealer_id}")
     if request.method == 'GET':
         context["dealer_id"] = dealer_id
         return render(request, 'djangoapp/add_review.html', context)
@@ -129,25 +130,13 @@ def add_review(request, dealer_id):
             review = {}
 
             #review["time"] = str(datetime.utcnow().isoformat())
-            review["dealership"] = int(request.POST["DealerID"])
+            review["dealership"] = int(dealer_id)
             review["review"] = str(request.POST["Review"])
             review["name"] = str(request.POST["Name"])
             review["purchase"] = str(request.POST["Purchase"])
             review["car_make"] = str(request.POST["CarMake"])
             review["car_model"] = str(request.POST["CarModel"])
             review["car_year"] = int(request.POST["CarYear"])
-    "review": {
-        "id": 1114,
-        "name": "Upkar Lidder",
-        "dealership": 15,
-        "review": "Great service!",
-        "purchase": "false",
-        "another": "field",
-        "purchase_date": "02/16/2021",
-        "car_make": "Audi",
-        "car_model": "Car",
-        "car_year": 2021
-    }
 
             url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/syncogame%40gmail.com_djangoserver-space/CloudApp_FinalCapstone/postReviewForDealership"
             
