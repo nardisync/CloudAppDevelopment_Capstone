@@ -5,7 +5,7 @@ from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-from ibm_watson.natural_language_understanding_v1 import Features, SyntaxOptions, SyntaxOptionsTokens
+from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions
 
 
 # A function to make HTTP GET requests.
@@ -22,16 +22,25 @@ def get_request(url, dealerId=None, stateId=None, apiKey=None, **kwargs):
                 authenticator=authenticator
             )
             natural_language_understanding.set_service_url(url)
+            print(f"Text to be analyze: {kwargs['kwargs']['text']}")
+            print("Preparing the response...")
+            try:
 
-            response = natural_language_understanding.analyze(
-                text=kwargs["kwargs"]["text"],
-                features=None).get_result()
+                response = natural_language_understanding.analyze(
+                    text=kwargs["kwargs"]["text"],
+                    features=Features(
+                        sentiment=SentimentOptions())).get_result()
 
-            print(json.dumps(response, indent=2))
+                print(f"All good! The response is: {json.dumps(response, indent=2)}")
+                return response['sentiment']['document']['label']
 
-            #TO-DO
-            # Va completato
-            
+            except Exception as e:
+                print(e.code)
+                if e.code == 422:
+                    print(f"Network exception occurred for NLU: {e}")
+                    print("Returning neutral")
+                    return "neutral"
+        
         else:
             # Call with GET with no authentication 
             if dealerId != None:
@@ -124,17 +133,13 @@ def analyze_review_sentiments(dealerreview):
     params["version"] = "1.0.0"
     params["features"] = "false"
     params["return_analyzed_text"] = "true"
+    
     url = "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/873bd99a-903e-41c4-a17c-fb1a9029cb84"
     api_key = "FYU-mqbxx8IYIJwLlvELjrrbnGro3f-SxxWq4aDoRCaE"
-    #json_result = get_request(url, apiKey=api_key, kwargs=params)
+    
+    sentiment_result = get_request(url, apiKey=api_key, kwargs=params)
 
-    choice = randrange(3)
-    if choice == 0 :
-        return "Positive"
-    if choice == 1 :
-        return "Neutral"
-    if choice == 2 :
-        return "Negative"
+    return sentiment_result
 
 # A function that process a JSON String into a CarDealer Object.
 # Return a JSON String with all the CarDealer created
@@ -165,7 +170,7 @@ def dealer_review_from_json(json_result):
         reviews = json_result["docs"]
         # For each review object
         for review_doc in reviews:
-            review_doc["sentiment"]="HARDCODED"
+            review_doc["sentiment"] = "HARDCODED"
             if review_doc["purchase"] == "true":
                 # Create a CarDealer object with values in `doc` object
                 review_obj = DealerReview(dealership=review_doc["dealership"], name=review_doc["name"], purchase=review_doc["purchase"],
@@ -181,6 +186,8 @@ def dealer_review_from_json(json_result):
                                         id=review_doc["id"])
             
             review_obj.sentiment = analyze_review_sentiments(review_obj.review)
+            print(review_obj.sentiment)
+            print(f"From 'dealer_review_from_json' object created : {review_obj}")
             results.append(review_obj)
 
     return results
