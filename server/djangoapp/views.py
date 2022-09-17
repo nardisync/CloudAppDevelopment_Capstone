@@ -106,11 +106,9 @@ def get_dealer_details(request, dealer_id):
         url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/syncogame%40gmail.com_djangoserver-space/CloudApp_FinalCapstone/getAllReviewsWithSelector"
         # Get reviews from the URL
         reviews = get_dealer_reviews_from_cf(url, dealer_id)
-        # Concat all dealer's short name
-        reviews_list = []
-        for review in reviews:
-            reviews_list.append(review)
-        context["reviews"] = reviews_list
+        context["reviews"] = reviews
+        context["dealer_id"] = dealer_id
+        
         # Return a list of dealer short name
         return render(request, 'djangoapp/dealer_details.html', context)
 
@@ -122,6 +120,7 @@ def add_review(request, dealer_id):
     print(f"DEALER_ID RECEIVED: {dealer_id}")
     if request.method == 'GET':
         context["dealer_id"] = dealer_id
+        
         return render(request, 'djangoapp/add_review.html', context)
 
     if request.method == "POST":

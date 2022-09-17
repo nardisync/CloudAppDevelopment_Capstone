@@ -58,15 +58,15 @@
     </nav>
 
     <!--Add a dealer table here -->
-    <table class="table" id="table">
+    <table class="table table-hover" id="table" data-filter-control="true">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Dealer Name</th>
-                <th scope="col">City</th>
-                <th scope="col">Address</th>
-                <th scope="col">Zip</th>
-                <th scope="col">State</th>
+                <th data-field="id">ID</th>
+                <th data-field="dealer_name">Dealer Name</th>
+                <th data-field="city" data-filter-control="select">City</th>
+                <th data-field="address">Address</th>
+                <th data-field="zip">Zip</th>
+                <th data-field="state" data-filter-control="select">State</th>
             </tr>
         </thead>
         <tbody>
@@ -92,4 +92,9 @@
     
     </body>
 
+    <script>
+        $(function() {
+          $('#table').bootstrapTable()
+        })
+      </script>
 </html>

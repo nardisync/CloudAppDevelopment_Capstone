@@ -49,12 +49,48 @@
         </div>
     </nav>
 
-    <!-- Add reviews as cards -->
+    {% if user.is_authenticated %}
+    <a href="{% url 'djangoapp:add_review' dealer_id %}" style="color:white"><button class="btn btn-primary">Add a review</button></a>
+
+    {% else %}
     <div>
-        {% for text_review in reviews %}
-        <div>{{ text_review }}</div><br>
+        If you want to add a review for this Dealership, you need to be logged-in
+    </div>
+
+    {% endif %}
+
+    <!-- Add reviews as cards -->
+    {% if reviews %}
+    <div class="card-columns"> 
+        {% for review in reviews %}
+        <div class="card">
+            {% if reviw.sentiment == positive %}
+            <img class="card-img-left h-25" style="width: 15%" src="{{MEDIA_URL}}/emoji/positive.png">
+            {% elif reviw.sentiment == negative %}
+            <img class="card-img-left h-25" style="width: 15%" src="{{MEDIA_URL}}/emoji/negative.png">
+            {% elif reviw.sentiment == neutral %}
+            <img class="card-img-left " style="width: 15%" src="{{MEDIA_URL}}/emoji/neutral.png">
+            {% endif %}
+            
+            <div class="card-body">
+                {% if reviw.purchase == false %}
+                    <h3>Warning: This user didn't purchase any car from this dealership</h3>
+                {% else %}
+                <h1><b>{{ review.car_make.capitalize }}, {{ review.car_model.capitalize }} <br>
+                    {{ review.car_year }}</b></h1>
+                {% endif %}
+            </div>
+
+            <div class="card-text">
+                <p class="mb-0">{{ review.review }}</p>
+            </div>
+        </div>
         {% endfor %}
     </div>
+    {% else %}
+    <h2>There are no reviews yet for this dealership.</h2> 
+    <p class="mb-0">Do you wanna be the first? Add a review!</p>
+    {% endif %}
 
     </body>
 

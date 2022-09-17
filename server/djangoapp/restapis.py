@@ -45,7 +45,7 @@ def get_request(url, dealerId=None, stateId=None, apiKey=None, **kwargs):
             # Call with GET with no authentication 
             if dealerId != None:
                 print("Call Selector with Dealer ID")
-                url += f"?id={dealerId}"
+                url += f"?dealership={dealerId}"
                 print(f"URL: {url}")
         
             elif stateId != None:
@@ -67,7 +67,7 @@ def get_request(url, dealerId=None, stateId=None, apiKey=None, **kwargs):
     status_code = response.status_code
 
     print(f"With status {status_code}.")
-    #print(response.text)
+    print(response.text)
     
     json_data = json.loads(response.text)
     return json_data
@@ -181,8 +181,7 @@ def dealer_review_from_json(json_result):
             else:
                 # Create a CarDealer object with values in `doc` object
                 review_obj = DealerReview(dealership=review_doc["dealership"], name=review_doc["name"], purchase=review_doc["purchase"],
-                                        review=review_doc["review"], purchase_date=review_doc["purchase_date"], car_make=review_doc["car_make"], 
-                                        car_model=review_doc["car_model"], car_year=review_doc["car_year"], sentiment=review_doc["sentiment"], 
+                                        review=review_doc["review"], sentiment=review_doc["sentiment"], 
                                         id=review_doc["id"])
             
             review_obj.sentiment = analyze_review_sentiments(review_obj.review)
