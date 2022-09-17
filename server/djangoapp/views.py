@@ -90,13 +90,11 @@ def get_dealerships(request):
     context = {}
     if request.method == "GET":
         url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/syncogame%40gmail.com_djangoserver-space/CloudApp_FinalCapstone/getAllDealerships"
+        
         # Get dealers from the URL
         dealerships = get_dealers_from_cf(url)
-        # Concat all dealer's short name
-        dealers_name = []
-        for dealer in dealerships:
-            dealers_name.append(dealer.short_name)
-        context["dealers_short_name"] = dealers_name
+        context["dealerships"] = dealerships
+
         # Return a list of dealer short name
         return render(request, 'djangoapp/index.html', context)
 

@@ -58,11 +58,30 @@
     </nav>
 
     <!--Add a dealer table here -->
-    <div>
-        {% for dealer in dealers_short_name %}
-        <div>{{ dealer }}</div>
-        {% endfor %}
-    </div>
+    <table class="table" id="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Dealer Name</th>
+                <th scope="col">City</th>
+                <th scope="col">Address</th>
+                <th scope="col">Zip</th>
+                <th scope="col">State</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dealer in dealerships %}
+            <tr>
+                <td>{{ dealer.id }}</td>
+                <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{dealer.full_name}}</a></td>
+                <td>{{ dealer.city }}</td>
+                <td>{{ dealer.address }}</td>
+                <td>{{ dealer.zip }}</td>
+                <td>{{ dealer.st }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <!-- Footer -->
     <footer class="footer fixed-bottom">

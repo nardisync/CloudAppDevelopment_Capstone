@@ -67,7 +67,7 @@ def get_request(url, dealerId=None, stateId=None, apiKey=None, **kwargs):
     status_code = response.status_code
 
     print(f"With status {status_code}.")
-    print(response.text)
+    #print(response.text)
     
     json_data = json.loads(response.text)
     return json_data
