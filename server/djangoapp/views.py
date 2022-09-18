@@ -5,11 +5,17 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import CarModel
 from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request
 from django.contrib.auth import login, logout, authenticate
+from configparser import ConfigParser, RawConfigParser
 from django.contrib import messages
 from datetime import datetime
+
 import logging
 import json
 import time
+
+
+constants = RawConfigParser()
+constants.read("./constant.ini")
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -89,7 +95,7 @@ def registration_request(request):
 def get_dealerships(request):
     context = {}
     if request.method == "GET":
-        url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/syncogame%40gmail.com_djangoserver-space/CloudApp_FinalCapstone/getAllDealerships"
+        url = constants.get("CONSTANTS", "REST_API_GET_ALL_DEALERSHIPS")
         
         # Get dealers from the URL
         dealerships = get_dealers_from_cf(url)
@@ -103,7 +109,7 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == "GET":
-        url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/syncogame%40gmail.com_djangoserver-space/CloudApp_FinalCapstone/getAllReviewsWithSelector"
+        url = constants.get("CONSTANTS", "REST_API_GET_ALL_REVIEWS_WITH_SELECTOR")
         # Get reviews from the URL
         reviews = get_dealer_reviews_from_cf(url, dealer_id)
         context["reviews"] = reviews
@@ -152,8 +158,9 @@ def add_review(request, dealer_id):
                     return redirect("djangoapp:add_review", dealer_id=dealer_id)
             else:
                 review["purchase"]      = "false"
-                #review["purchase_date"] = ""
-            url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/syncogame%40gmail.com_djangoserver-space/CloudApp_FinalCapstone/postReviewForDealership"
+
+
+            url = constants.get("CONSTANTS", "REST_API_POST_REVIEW_FOR_DEALERSHIP")
             
             response = post_request(url=url, jsonPayload=review)
             print(f"Response: {response.text}")

@@ -6,6 +6,10 @@ from requests.auth import HTTPBasicAuth
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions
+from configparser import ConfigParser, RawConfigParser
+
+constants = RawConfigParser()
+constants.read("./constant.ini")
 
 
 # A function to make HTTP GET requests.
@@ -134,8 +138,8 @@ def analyze_review_sentiments(dealerreview):
     params["features"] = "false"
     params["return_analyzed_text"] = "true"
     
-    url = "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/873bd99a-903e-41c4-a17c-fb1a9029cb84"
-    api_key = "FYU-mqbxx8IYIJwLlvELjrrbnGro3f-SxxWq4aDoRCaE"
+    url = constants.get("CONSTANTS", "NATURAL_LANGUAGE_UNDERSTANDING_URL")
+    api_key = constants.get("CONSTANTS", "NATURAL_LANGUAGE_UNDERSTANDING_API_KEY")
     
     sentiment_result = get_request(url, apiKey=api_key, kwargs=params)
 
@@ -200,15 +204,15 @@ def dealer_review_from_json(json_result):
 
 
 if __name__ == '__main__':
-    url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/syncogame%40gmail.com_djangoserver-space/CloudApp_FinalCapstone/getAllDealerships"
     #print(f"get_dealers_from_cf: {get_dealers_from_cf(url)}")
     print("---------------------------")
-    url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/syncogame%40gmail.com_djangoserver-space/CloudApp_FinalCapstone/getAllDealershipsWithState"
     #print(f"get_dealers_from_cf: {get_dealer_by_id_from_cf(url, dealerId=15)}")
     print("---------------------------")
     #print(f"get_dealers_from_cf: {get_dealers_by_state(url, stateId='TX')}")
     print("---------------------------")
     #print(f"get_dealers_from_cf: {get_dealer_by_id_from_cf(url, dealerId=15)}")
-    url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/syncogame%40gmail.com_djangoserver-space/CloudApp_FinalCapstone/getAllReviewsWithSelector"
-    print(f"get_dealers_from_cf: {get_dealer_reviews_from_cf(url, dealerId=15)}")
     print("---------------------------")
+    #print(f"get_dealers_from_cf: {get_dealer_reviews_from_cf(url, dealerId=15)}")
+    print("---------------------------")
+    print(constants.get("CONSTANTS", "API"))
+    
