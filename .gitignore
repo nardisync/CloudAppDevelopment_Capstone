@@ -139,4 +139,5 @@ server/djangoapp/migrations/
 .DS_Store
 *.pyc
 server/djangoapp/migrations/
+server/djangoapp/constant.ini
 
