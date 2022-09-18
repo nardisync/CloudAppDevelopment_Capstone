@@ -147,16 +147,22 @@ def car_dealer_from_json(json_result):
     results = []
     if json_result:
         # Get the row list in JSON as dealers
-        dealers = json_result["rows"]
+        if json_result.get("rows"):
+            print("Received a dictionary with various rows")
+            dealers = json_result["rows"]
+        else:
+            print("Received a dictionary with a single document")
+            dealers = [ { 'doc' : json_result['docs'][0] } ]
+            
         # For each dealer object
         for dealer in dealers:
             # Get its content in `doc` object
             dealer_doc = dealer["doc"]
             # Create a CarDealer object with values in `doc` object
             dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
-                                   id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
-                                   short_name=dealer_doc["short_name"],
-                                   st=dealer_doc["st"], zip=dealer_doc["zip"])
+                                id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
+                                short_name=dealer_doc["short_name"],
+                                st=dealer_doc["st"], zip=dealer_doc["zip"])
             results.append(dealer_obj)
 
     return results
@@ -184,9 +190,8 @@ def dealer_review_from_json(json_result):
                                         review=review_doc["review"], sentiment=review_doc["sentiment"], 
                                         id=review_doc["id"])
             
-            review_obj.sentiment = analyze_review_sentiments(review_obj.review)
-            print(review_obj.sentiment)
-            print(f"From 'dealer_review_from_json' object created : {review_obj}")
+            review_obj.sentiment = str(analyze_review_sentiments(review_obj.review))
+            print(f"Sentiment for the text: {review_obj.sentiment}")
             results.append(review_obj)
 
     return results

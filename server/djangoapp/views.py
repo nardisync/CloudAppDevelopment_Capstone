@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-# from .models import related models
+from .models import CarModel
 from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -117,34 +117,48 @@ def get_dealer_details(request, dealer_id):
 # View for submit a review
 def add_review(request, dealer_id):
     context = {}
-    print(f"DEALER_ID RECEIVED: {dealer_id}")
+    
     if request.method == 'GET':
-        context["dealer_id"] = dealer_id
-        
+        cars = CarModel.objects.filter(dealer_id=dealer_id)
+        context["cars"]         = cars
+        context["dealer_id"]    = dealer_id
+
         return render(request, 'djangoapp/add_review.html', context)
 
     if request.method == "POST":
         if request.user.is_authenticated:
+            print(f"POST Received: {request.POST}")
             review = {}
-            
-            # Da migliorare direi
-            review["id"] = int(((time.time()/60)/60))
-            
-            review["name"] = str(request.POST["Name"])
-            review["dealership"] = int(dealer_id)
-            review["review"] = str(request.POST["Review"])
-            review["purchase"] = str(request.POST["Purchase"])
-            review["purchase_date"] = str(datetime.utcnow().isoformat())
-            review["car_make"] = str(request.POST["CarMake"])
-            review["car_model"] = str(request.POST["CarModel"])
-            review["car_year"] = int(request.POST["CarYear"])
+            car_objects = CarModel.objects.filter(car_id=int(request.POST["car"]))
 
+            # Da migliorare direi
+            dt = datetime(2022, 9, 22, 0, 0)
+            review["id"] = int(dt.timestamp())
+            
+            review["name"]          = str(request.POST["name"])
+            review["dealership"]    = int(dealer_id)
+            review["review"]        = str(request.POST["review"])
+            
+            if request.POST.get("purchasecheck"):
+                try:
+                    review["purchase"]      = "true"
+                    review["purchase_date"] = str(request.POST["purchasedate"])
+                    review["car_make"]      = str(car_objects.values_list('car_maker', flat=True)[0])
+                    review["car_model"]     = str(car_objects.values_list('car_name', flat=True)[0])
+                    review["car_year"]      = int(car_objects.values_list('car_year', flat=True)[0].strftime("%Y"))
+                    
+                except Exception as e:
+                    print(f"Error received: {e}\nRedirection...")
+                    return redirect("djangoapp:add_review", dealer_id=dealer_id)
+            else:
+                review["purchase"]      = "false"
+                #review["purchase_date"] = ""
             url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/syncogame%40gmail.com_djangoserver-space/CloudApp_FinalCapstone/postReviewForDealership"
             
             response = post_request(url=url, jsonPayload=review)
             print(f"Response: {response.text}")
-
-            return redirect('djangoapp:login')
+            return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
+            #return redirect('djangoapp:login')
         else:
             context['message'] = "Invalid username or password."
             return render(request, 'djangoapp/user_login.html', context)

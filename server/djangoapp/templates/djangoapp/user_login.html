@@ -9,21 +9,21 @@
 
     <!-- Navigation Bar in Bootstrap -->
     <nav class="navbar navbar-expand-xl navbar-dark bg-dark justify-content-between">
-        <a class="navbar-brand" href="#">Car Dealership</a>
+        <a class="navbar-brand" href="#">Car Dealership Cloud App</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="./index">Review<span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'djangoapp:index' %}">Dealerships<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="./about">About Us<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{% url 'djangoapp:about' %}">About Us<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="./contact">Contact Us</a>
+                    <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact Us</a>
                 </li>
             </ul>
 

@@ -4,8 +4,7 @@ from django.utils.timezone import now
 # Car Make model 
 class CarMake(models.Model):
     name = models.CharField(null=False, 
-            max_length=30, 
-            default="Car Maker",
+            max_length=30,
             primary_key=True)
     description = models.TextField()
 
@@ -25,16 +24,16 @@ class CarModel(models.Model):
         ('CONVERTIBLE', 'Convertible'),
         ('HATCHBACK', 'Hatchback')
     ]
-
+    car_id      = models.AutoField(primary_key=True)
     car_maker   = models.ForeignKey(CarMake, on_delete=models.CASCADE)
     car_name    = models.CharField(max_length=30, default="Car Name", 
-                        null=False,primary_key=True )
+                        null=False)
     dealer_id   = models.IntegerField(null=False)
     car_type    = models.CharField(choices=CAR_TYPE, default='Sedan', max_length=50)
     car_year    = models.DateField()
 
     def __str__(self):
-        return f"Car Model: {self.car_name} | Type: {self.car_type} | Maker: {self.car_maker} \nYear of Production: {self.car_year}\nDealer ID: {self.dealer_id}"
+        return f"Car ID: {self.car_id} | Car Model: {self.car_name} | Type: {self.car_type} | Maker: {self.car_maker} \nYear of Production: {self.car_year}\nDealer ID: {self.dealer_id}"
 
 
 # A Python class `CarDealer` to hold dealer data
