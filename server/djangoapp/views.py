@@ -34,6 +34,12 @@ def get_contact_us(request):
     if request.method == "GET":
         return render(request, 'djangoapp/contact.html', context)
 
+# An `my links` view to return a static my links page
+def get_my_links(request):
+    context = {}
+    if request.method == "GET":
+        return render(request, 'djangoapp/my_links.html', context)
+
 # An `login_request` view to handle sign in request
 def login_request(request):
     context = {}

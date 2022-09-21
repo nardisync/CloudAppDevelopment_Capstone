@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dealership - All my Links</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+
+</head>
+
+    <body>
+        <!-- Navigation Bar in Bootstrap -->
+        <nav class="navbar navbar-expand-xl navbar-dark bg-dark justify-content-between">
+            <a class="navbar-brand" href="#">Car Dealership Cloud App</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'djangoapp:index' %}">Dealerships<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'djangoapp:about' %}">About Us<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact Us</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'djangoapp:mylinks' %}">All my Links</a>
+                    </li>
+                </ul>
+
+                {% if user.is_authenticated %}
+                <a class="btn btn-link" href="#">({{ user.username }})</a>
+                <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
+
+                {% else %}
+                <div>
+                    <form class="form-inline" action="{% url 'djangoapp:login' %}" method="post">>
+                        {% csrf_token %}
+                        <div>
+                            <input id="Username" class="form-control" type="text" placeholder="Enter User Name: " name="Username" required> 
+                            <input id="Password" class="form-control" type="Password"  placeholder="Enter Password: " name="Password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary ml-3">Login</button>
+                        <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
+                    </form>
+                </div>
+                
+                {% endif %}
+            </div>
+        </nav>
+
+    <!-- Content -->
+    <div class="container">
+
+        <!-- Header -->
+        <div class="jumbotron">
+            <h1 class="display-4">Ciao 👋</h1>
+            <p class="lead">
+                Welcome in this section about me. Here, you can find <b>all all my links</b> to reach me.<br>
+                Please, take your time to look around.
+            </p>
+            <hr class="my-4">
+            <p>
+                <b>About Me: </b> I'm a 26-year-old <b> Software Engineer </b> with one year of experience and a growth mindset, always looking for a new
+                opportunities to grow in hes career. Currently, I'm working for <b>Capgemini Engineering</b>.</p>
+        </div>
+    
+        <!-- Deck of Links -->
+        <div class="card-deck">
+            <div class="card">
+                <a href="https://www.linkedin.com/in/nardisync/?locale=en_US" target=”_blank”>
+                    <img class="card-img-top" src="{{MEDIA_URL}}/images/linkedin.png" alt="Card image cap">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title"><a href="https://www.linkedin.com/in/nardisync/?locale=en_US" target=”_blank”>LinkedIn</a></h5>
+                    <p class="card-text">Personal LinkedIn profile, feel free to contact me.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 21/09/2022</small></p>
+                </div>
+            </div>
+            <div class="card">
+                <a href="https://github.com/nardisync" target=”_blank”>
+                    <img class="card-img-top" src="{{MEDIA_URL}}/images/github.png" alt="Card image cap">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title"><a href="https://github.com/nardisync" target=”_blank”>GitHub</a></h5>
+                    <p class="card-text">Here you can find all my projects</p>
+                    <p class="card-text"><small class="text-muted">Last updated 21/09/2022</small></p>
+                </div>
+            </div>
+            <div class="card">
+                <a href="https://nardisync.github.io/index.html" target=”_blank”>
+                    <img class="card-img-top" src="{{MEDIA_URL}}/images/portfolio.png" alt="Card image cap">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title"><a href="https://nardisync.github.io/index.html" target=”_blank”>Portfolio</a></h5>
+                    <p class="card-text">This is my Personal Portfolio. Here you can find more about me and my career.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 21/09/2022</small></p>
+                </div>
+            </div>
+            <div class="card">
+                <a href="https://www.coursera.org/user/88412174b050f96c81c843fad6dbd3b1" target=”_blank”>
+                    <img class="card-img-top" src="{{MEDIA_URL}}/images/coursera.png" alt="Card image cap">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title"><a href="https://www.coursera.org/user/88412174b050f96c81c843fad6dbd3b1" target=”_blank”>Coursera</a></h5>
+                    <p class="card-text">Here are listed all my certification taked with.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 21/09/2022</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer fixed-bottom">
+        <div class="container">
+          <span class="text-muted">Place sticky footer content here.</span>
+        </div>
+    </footer>
+    
+    </body>
+
+</html>
