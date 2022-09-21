@@ -141,28 +141,41 @@ def add_review(request, dealer_id):
         if request.user.is_authenticated:
             print(f"POST Received: {request.POST}")
             review = {}
-            car_objects = CarModel.objects.filter(car_id=int(request.POST["car"]))
 
-            # Da migliorare direi
-            dt = datetime(2022, 9, 22, 0, 0)
-            review["id"] = int(dt.timestamp())
-            
-            review["name"]          = str(request.POST["name"])
-            review["dealership"]    = int(dealer_id)
-            review["review"]        = str(request.POST["review"])
-            
-            if request.POST.get("purchasecheck"):
-                try:
-                    review["purchase"]      = "true"
-                    review["purchase_date"] = str(request.POST["purchasedate"])
-                    review["car_make"]      = str(car_objects.values_list('car_maker', flat=True)[0])
-                    review["car_model"]     = str(car_objects.values_list('car_name', flat=True)[0])
-                    review["car_year"]      = int(car_objects.values_list('car_year', flat=True)[0].strftime("%Y"))
-                    
-                except Exception as e:
-                    print(f"Error received: {e}\nRedirection...")
-                    return redirect("djangoapp:add_review", dealer_id=dealer_id)
+            if request.POST.get("car"):
+
+                car_objects = CarModel.objects.filter(car_id=int(request.POST["car"]))
+
+                # Da migliorare direi
+                dt = datetime(2022, 9, 22, 0, 0)
+                review["id"] = int(dt.timestamp())
+                
+                review["name"]          = str(request.POST["name"])
+                review["dealership"]    = int(dealer_id)
+                review["review"]        = str(request.POST["review"])
+                
+                if request.POST.get("purchasecheck"):
+                    try:
+                        review["purchase"]      = "true"
+                        review["purchase_date"] = str(request.POST["purchasedate"])
+                        review["car_make"]      = str(car_objects.values_list('car_maker', flat=True)[0])
+                        review["car_model"]     = str(car_objects.values_list('car_name', flat=True)[0])
+                        review["car_year"]      = int(car_objects.values_list('car_year', flat=True)[0].strftime("%Y"))
+                        
+                    except Exception as e:
+                        print(f"Error received: {e}\nRedirection...")
+                        return redirect("djangoapp:add_review", dealer_id=dealer_id)
+                else:
+                    review["purchase"]      = "false"
+
             else:
+                # Da migliorare direi
+                dt = datetime(2022, 9, 22, 0, 0)
+                review["id"] = int(dt.timestamp())
+                
+                review["name"]          = str(request.POST["name"])
+                review["dealership"]    = int(dealer_id)
+                review["review"]        = str(request.POST["review"])
                 review["purchase"]      = "false"
 
 

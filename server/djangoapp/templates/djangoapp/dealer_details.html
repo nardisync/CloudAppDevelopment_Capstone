@@ -51,16 +51,7 @@
             {% endif %}
         </div>
     </nav>
-
-    {% if user.is_authenticated %}
-    <a href="{% url 'djangoapp:add_review' dealer_id %}" style="color:white"><button class="btn btn-primary">Add a review</button></a>
-
-    {% else %}
-    <div>
-        If you want to add a review for this Dealership, you need to be logged-in
-    </div>
-
-    {% endif %}
+    <br><br>
 
     <!-- Add reviews as cards -->
     {% if reviews %}
@@ -80,8 +71,12 @@
                 {% if review.purchase == false %}
                     <h3>Warning: This user didn't purchase any car from this dealership</h3>
                 {% else %}
-                <h1><b>{{ review.car_make.capitalize }}, {{ review.car_model.capitalize }} <br>
-                    {{ review.car_year }}</b></h1>
+                {% if review.car_make %}
+                    <h1><b>{{ review.car_make.capitalize }}, {{ review.car_model.capitalize }} <br>
+                        {{ review.car_year }}</b></h1>
+                {% else %}
+                    <div class="p-3 mb-2 bg-warning text-dark">Didn't purchase a Car but leaved a review</div><br>
+                {% endif %}
                 {% endif %}
             </div>
 
@@ -96,6 +91,24 @@
     <p class="mb-0">Do you wanna be the first? Add a review!</p>
     {% endif %}
 
+    <br><br>
+    <div class="card border-dark mx-auto" style="width:40%"">
+        <div class="card-header bg-dark" >
+            <h5 class="card-title text-center pt-1" style="color:aliceblue">You know this dealer? Why don't you give us a review!</h5>
+        </div>
+        <div class="card-body text-center"> 
+            {% if user.is_authenticated %}
+            
+            <a href="{% url 'djangoapp:add_review' dealer_id %}" style="color:white"><button class="btn btn-primary">Add a review</button></a>
+            
+            {% else %}
+            If you want to add a review for this Dealership, you need to be logged-in
+            
+        </div>
+        {% endif %}
+    </div>
     </body>
 
 </html>
+
+ 
