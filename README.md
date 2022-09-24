@@ -1,36 +1,36 @@
-# Final Project Template
+# Dealerships Cloud Web App
 
-The final project for this course has several steps that you must complete. 
-To give you an overview of the whole project, all the high-level steps are listed below. 
-The project is then divided into several smaller labs that give the detailed instructions for each step. 
-You must complete all the labs to successfully complete the project.
+## A fully functional Full-Stack Cloud Web App created with Django that use REST API for fetching datas from various Databases in the Cloud   
 
-## Project Breakdown
+This project it for the Final Course of the <a href="https://www.coursera.org/learn/ibm-cloud-native-full-stack-development-capstone">"Full Stack Cloud Development Capstone Project"</a> Professional Certificate. You can find the full functional Website at the following link: 
+<a href="https://nardisync.eu-gb.cf.appdomain.cloud/djangoapp/index">Website App</a>
 
-**Prework: Sign up for IBM Cloud account and create a Watson Natural language Understanding service**
-1. Create an IBM cloud account if you don't have one already.
-2. Create an instance of the Natural Language Understanding (NLU) service.
 
-**Fork the project Github repository with a project then build and deploy the template project**
-1. Fork the repository in your account
-2. Clone the repository in the theia lab environment
-3. Create static pages to finish the user stories
-4. Deploy the application on IBM Cloud
 
-**Add user management to the application**
-1. Implement user management using the Django user authentication system.
-2. Set up continuous integration and delivery
 
-**Implement backend services**
-1. Create cloud functions to manage dealers and reviews
-2. Create Django models and views to manage car model and car make
-3. Create Django proxy services and views to integrate dealers, reviews, and cars together
- 
-**Add dynamic pages with Django templates**
-1. Create a page that shows all the dealers
-2. Create a page that show reviews for a selected dealer
-3. Create a page that let's the end user add a review for a selected dealer
+## How to use the Website App
+The app is hosted at the following link: <a href="https://nardisync.eu-gb.cf.appdomain.cloud/djangoapp/index">Website App</a><br>
+You will be welcomed by a list of dealerships fetched from a cloud databases. For each of them, you can click on it and see all the reviews lefted from other users.<br>
+If you wan, you also can leave a review, but you need to be logged in. This site also give the possibility for an user to registers on this platform. <br>
+All the reviews wil lbe analized by an NLU Service offered by IBM and a "positive", negative" or "neutral" tag will be gived to them.
 
-**Containerize your application**
-1. Add deployment artifacts to your application
-2. Deploy your application
+In summary, in this Webapp you can:
+* See all the dealerships hosted in a databases
+* Add or remove Cars and Cars Maker (need to be an admin)
+* See all the reviews of others users 
+* Leave your personal review
+* Sign in and Login
+
+
+## How to get started with this project
+The easiest way to see how this app works by going to the actual website. But here is an alternative solution but it requires >Python3.6 and an IBM Cloud account.
+1. Clone this project
+2. Create an NLU Service in the IBM Cloud Service
+3. Create an instance of Cloudant from the IBM Cloud Service with two databases : "dealerships" and "reviews"
+4. Get the API of the Cloudant and NLU Service
+6. In the root repository of this project launch <code> python3 pip install -r requirements.txt</code>
+7. Launch <code>cd ./server</code>
+8. Launch <code>python3 manage.py runserver</code>
+9. Go to <a href="localhost:8000/djangoapp/index">localhost:8000/djangoapp/index</a>
+
+You will still need to create the REST API endpoints in the Function catalog of IBM Cloud, I will leave an example inside the project
