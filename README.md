@@ -33,4 +33,4 @@ The easiest way to see how this app works by going to the actual website. But he
 8. Launch <code>python3 manage.py runserver</code>
 9. Go to <a href="localhost:8000/djangoapp/index">localhost:8000/djangoapp/index</a>
 
-You will still need to create the REST API endpoints in the Function catalog of IBM Cloud, I will leave an example inside the project
+You will still need to create the REST API endpoints in the Function catalog of IBM Cloud, I will leave an example inside the project.
